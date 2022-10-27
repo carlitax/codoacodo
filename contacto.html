@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+      integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm"
+      crossorigin="anonymous"
+    />
+    <link rel="icon" type="image/x-icon" href="images/favicon/favicon.ico">
+    <title>Panganietto</title>
+  </head>
+  <body>
+    <header>
+    <div class="menu">
+      <div class="logo">
+          <a href="index.html"><img src="images/logo.png" height="170"></a>
+      </div>
+      <div class="nav">
+          <a href="index.html">Inicio</a>
+          <a href="nosotros.html">Nosotros</a>
+          <a href="productos.html">Productos</a>
+          <a href="ubicacion.html">Ubicación</a>
+          <a href="contacto.html">Contacto</a>
+      </div>
+    </div>
+    </header>
+     
+    <div class="container">
+       <div class="content">
+          <div class="image"></div>
+      </div>  
+      <form id ="form"  action="https://formspree.io/f/xzbwjdlk" method="POST">
+        <div>
+          <label for="nombre">Nombre y Apellido</label>
+                <i class="fas fa-user"></i>
+                <input type="text" name="name" id="name" placeholder="Joaquín Gonzalez"/>
+                <i class="fas fa-exclamation-circle failure-icon"></i>
+                <i class="far fa-check-circle success-icon"></i>
+                <div class="error"></div>
+        </div>
+        <div>
+          <label for="email">Correo Electrónico</label>
+          <i class="far fa-envelope"></i>
+                <input type="email" name="email" id="email" placeholder="tumail@gmail.com"/>
+                <i class="fas fa-exclamation-circle failure-icon"></i>
+                <i class="far fa-check-circle success-icon"></i>  
+                <div class="error"></div>
+        </div>
+
+        <div>
+          <label for="telefono">Teléfono de Contacto</label>
+          <i class="fas fa-sharp fa-solid fa-phone"></i>
+          <input type="text" name="tel" id="tel" placeholder="234540"/>
+          <i class="fas fa-exclamation-circle failure-icon"></i>
+          <i class="far fa-check-circle success-icon"></i>
+          <div class="error"></div>
+        </div>
+        
+        <div>
+          <label for="mensaje">Comentario:</label>
+          <textarea class="texto" type="message" name="msj" id="msj" placeholder="Escribe aqui tus comentarios y/o dudas..."cols="66" rows="29"></textarea>
+          <i class="fas fa-exclamation-circle failure-icon"></i>
+          <i class="far fa-check-circle success-icon"></i>
+          <div class="error"></div>
+        </div>   
+        <button type="submit" id="submit">Enviar</button>
+      </form>
+    </div>
+    <footer>
+      <!-- Footer main -->
+      <section class="ft-main">
+        <div class="ft-main-item">
+          <ul>
+              <a><img src="images/logo-pie.png" height="300"></a>
+          </ul>
+        </div>
+        <div class="ft-main-item">
+          <h2 class="ft-title">Encuentranos...</h2>
+          <ul class="fa-ul" style="margin-left: 1.65em;">
+              <li class="mb-3">
+                <span class="fa-li"><i class="fas fa-home"></i></span><span class="ms-2">Calle Marmol n° 688, G. Alvear, Bs. As</span>
+              </li>
+              <li class="mb-3">
+                <span class="fa-li"><i class="fas fa-envelope"></i></span><span class="ms-2">panganietto@gmail.com</span>
+          
+              <li class="mb-3">
+                <span class="fa-li"><i class="fas fa-phone"></i></span><span class="ms-2">+54 234</span>
+              </li>
+            </ul>
+          </div>
+      </section>       
+      <!-- Footer social -->
+      <section class="ft-social">
+        <ul class="ft-social-list">
+          <li><a href="https://www.facebook.com/Panganietto-210276972329354"><i class="fab fa-facebook"></i></a></li>
+          <li><a href="https://www.instagram.com/panganietto/"><i class="fab fa-instagram"></i></a></li>
+        </ul>
+      </section>
+      <!-- Footer legal -->
+      <section class="ft-legal">
+        <ul class="ft-legal-list">
+          <li>&copy; 2022 Copyright Panganietto</li>
+        </ul>
+      </section>
+</footer>
+</body>
+<script>
+const $form = document.querySelector('#form')
+$form.addEventListener('submit', handlesubmit)
+async function handlesubmit(event){
+  event.preventDefault()
+  const form = new FormData(this)
+  const response = await fetch(this.action, {
+    method: this.method,
+    body:form,
+    headers: {
+      'accept': 'application/json'
+    }
+  })
+  if (response.ok){
+    this.reset()
+    alert('Gracias por tu mensaje!')
+  }
+}
+
+let id = (id) => document.getElementById(id);
+
+let classes = (classes) => document.getElementsByClassName(classes);
+
+let name = id("name"),
+  email = id("email"),
+  tel = id("tel"),
+  msj = id("msj"),
+  form = id("form"),
+  errorMsg = classes("error"),
+  successIcon = classes("success-icon"),
+  failureIcon = classes("failure-icon");
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  engine(name, 0, "El campo nombre no puede estar en blanco");
+  engine(email, 1, "El campo mail no puede estar en blanco");
+  engine(tel, 2, "El campo telefono no puede estar en blanco");
+  engine(msj, 3, "El campo mensaje no puede estar en blanco");
+});
+
+let engine = (id, serial, message) => {
+  if (id.value.trim() === "") {
+    errorMsg[serial].innerHTML = message;
+    id.style.border = "2px solid red";
+
+    // icons
+    failureIcon[serial].style.opacity = "1";
+    successIcon[serial].style.opacity = "0";
+  } else {
+    errorMsg[serial].innerHTML = "";
+    id.style.border = "2px solid green";
+
+    // icons
+    failureIcon[serial].style.opacity = "0";
+    successIcon[serial].style.opacity = "1";
+  }
+};
+
+
+</script>
+</html>
